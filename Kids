@@ -1,0 +1,13 @@
+with A as (select product.maker,pc.model,pc.speed,pc.price,printer.model as pmodel,printer.color,printer.type,printer.price prprice from pc
+inner join laptop on laptop.ram=pc.ram
+inner join printer on printer.price=pc.price
+inner join laptop as D on  D.screen=(laptop.screen+3)
+inner join product on product.model=D.model
+where isnull(substring(printer.model,3,1),' ')<>isnull(substring(laptop.model,3,1),' ')  
+and STUFF(printer.model, 3, 1, ' ') = STUFF(laptop.model, 3, 1, ' ')  and (D.hd=pc.hd))
+select distinct A.model from A
+inner join pc on pc.speed=A.speed
+inner join printer on printer.price*4=pc.price and printer.type!=A.type
+and printer.color=A.color
+inner join product on product.model=pc.model
+where A.maker=product.maker
